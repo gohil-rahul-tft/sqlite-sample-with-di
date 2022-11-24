@@ -7,6 +7,7 @@ object BookTable {
     const val TITLE = "title"
     const val AUTHOR = "author"
     const val PAGES = "book_pages"
+    const val PRICE = "price"
 
 
     fun getCreateBookQuery(): String {
@@ -18,6 +19,15 @@ object BookTable {
         query.append("$AUTHOR TEXT NOT NULL,")
         query.append("$PAGES TEXT NOT NULL")
         query.append(" )")
+
+        return query.toString()
+    }
+
+
+    fun addPriceFieldQuery(): String {
+        val query = StringBuilder("ALTER TABLE $TABLE_NAME ")
+        query.append("ADD COLUMN $PRICE ")
+        query.append("INTEGER DEFAULT 0;")
 
         return query.toString()
     }
