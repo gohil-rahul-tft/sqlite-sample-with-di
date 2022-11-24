@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.example.sqlitelearning.dao.BookDao
 import com.example.sqlitelearning.data.Book
 import com.example.sqlitelearning.databinding.ActivityMainBinding
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), BookAdapter.BookInterface {
 
 
     private fun collectData() {
-        collectLatestFlow(viewModel.books) {
+        collectLatestFlow(flow = viewModel.getBooks(), lifecycleState = Lifecycle.State.STARTED) {
             Log.i(TAG, "init: $it")
             bookAdapter.submitList(it)
         }

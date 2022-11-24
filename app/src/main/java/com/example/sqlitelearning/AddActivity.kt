@@ -1,18 +1,26 @@
 package com.example.sqlitelearning
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.example.sqlitelearning.dao.BookDao
 import com.example.sqlitelearning.data.Book
 import com.example.sqlitelearning.databinding.ActivityAddBinding
 import com.example.sqlitelearning.db.DatabaseHelper
+import com.example.sqlitelearning.utils.collectLatestFlow
 import com.example.sqlitelearning.utils.normalText
+import com.example.sqlitelearning.utils.toast
 import com.example.sqlitelearning.view_models.BookViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "AddActivity"
+    }
 
     private lateinit var binding: ActivityAddBinding
 
@@ -33,6 +41,7 @@ class AddActivity : AppCompatActivity() {
 
         init()
         clickListener()
+        collectData()
     }
 
     private fun clickListener() {
@@ -54,5 +63,14 @@ class AddActivity : AppCompatActivity() {
 
     private fun init() {
 
+    }
+
+
+    private fun collectData() {
+        collectLatestFlow(flow = viewModel.message) {
+            Log.i(TAG, "Collect Data: $it")
+            context.toast(it)
+            finish()
+        }
     }
 }

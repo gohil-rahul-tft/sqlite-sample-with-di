@@ -38,7 +38,7 @@ class BookDao @Inject constructor(private val dbHelper: DatabaseHelper) {
     }
 
 
-    fun addBook(book: Book) {
+    fun addBook(book: Book): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
 
         val cv = ContentValues().also { cv ->
@@ -47,7 +47,8 @@ class BookDao @Inject constructor(private val dbHelper: DatabaseHelper) {
             cv.put(BookTable.PAGES, book.pages)
         }
 
-        when (db.insert(BookTable.TABLE_NAME, null, cv)) {
+        val inserted = db.insert(BookTable.TABLE_NAME, null, cv)
+        when (inserted) {
             -1L -> {
                 Log.d(TAG, "addBook: Failed")
             }
@@ -55,6 +56,8 @@ class BookDao @Inject constructor(private val dbHelper: DatabaseHelper) {
                 Log.d(TAG, "Added Successfully!")
             }
         }
+
+        return inserted
     }
 
 
